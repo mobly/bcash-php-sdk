@@ -1,4 +1,7 @@
 <?php
+
+namespace BCash\ServiceImpl;
+
 /**
  * Classe base para implementacoes de servicos.
  *

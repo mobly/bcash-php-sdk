@@ -1,5 +1,7 @@
 <?php 
 
+namespace BCash\Domain;
+
 class StateEnum{
 	
 	const ACRE = "AC";

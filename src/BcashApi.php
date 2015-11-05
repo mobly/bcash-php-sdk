@@ -1,41 +1,164 @@
 <?php
 
-class BcashApi {
-	
-	private static $currentPath;
-	
-	private function __construct() {
-		self::init();
-	}
-	
-	public final static function init(){
-		self::$currentPath = (dirname(__FILE__));
-		
-		$dirs = array(
-			'config',
-			'domain',
-			'exception',
-			'service',
-			'serviceImpl'
-		);
-		
-		foreach ($dirs as $d) {
-			$directory = self::$currentPath.DIRECTORY_SEPARATOR.$d.DIRECTORY_SEPARATOR;
-			$dir = opendir($directory);
-			while($arq = readdir($dir)) { 
-				$arq = $directory.$arq;
-				if (file_exists($arq) && is_file($arq)) {
-					require_once($arq);
-				}
-			}
-			closedir($dir);
-		}
-	}
-	
-	public final static function getCurrentPath(){
-		return self::$currentPath;
-	}
-	
-}
+namespace BCash; 
 
-BcashApi::init();
+use BCash\Config\Config;
+use BCash\Domain\Address;
+use BCash\Domain\CreditCard;
+use BCash\Domain\Customer;
+use BCash\Domain\PaymentMethod;
+use BCash\Domain\PaymentMethodEnum;
+use BCash\Domain\Product;
+use BCash\Domain\TransactionRequest;
+use BCash\ServiceImpl\Consultation;
+use BCash\ServiceImpl\TransactionServiceImpl;
+
+class BcashApi {
+
+    /**
+     * Class Constructor
+     *
+     * @param array $config
+     * @return void
+     * @author Wilton Garcia <wilton.oliveira@mobly.com.br>, <wiltonog@gmail.com>
+     **/
+    public function __construct($config)
+    {                                  
+        $this->config = Config::getInstance($config);
+    }
+
+    /**
+     * Return a TransactionRequest object 
+     *
+     * @return BCash\Domain\TransactionRequest
+     * @author Wilton Garcia <wilton.oliveira@mobly.com.br>, <wiltonog@gmail.com>
+     **/
+    public function getTransactionRequest()
+    {
+        $transactionRequest = new TransactionRequest();
+
+        $transactionRequest->setSellerMail($this->config->getSellerMail());
+
+        return $transactionRequest;
+    }    
+
+    /**
+     * Return a Customer object
+     *
+     * @return BCash\Domain\Customer
+     * @author Wilton Garcia <wilton.oliveira@mobly.com.br>, <wiltonog@gmail.com>
+     **/
+    public function getCustomer()
+    {
+        return new Customer();    
+    }
+
+
+    /**
+     * Return a Product object
+     *
+     * @return BCash\Domain\Product
+     * @author Wilton Garcia <wilton.oliveira@mobly.com.br>, <wiltonog@gmail.com>
+     **/
+    public function getProduct()
+    {
+        return new Product();    
+    }
+
+
+    /**
+     * Return a Address object
+     *
+     * @return BCash\Domain\Address
+     * @author Wilton Garcia <wilton.oliveira@mobly.com.br>, <wiltonog@gmail.com>
+     **/
+    public function getAddress()
+    {
+        return new Address();    
+    }
+
+    /**
+     * Return a PaymentMethod object
+     *
+     * @return BCash\Domain\PaymentMethod
+     * @author Wilton Garcia <wilton.oliveira@mobly.com.br>, <wiltonog@gmail.com>
+     **/
+    public function getPaymentMethod()
+    {
+        return new PaymentMethod();    
+    }
+
+
+    /**
+     * Return a CreditCard object
+     *
+     * @return BCash\Domain\CreditCard
+     * @author Wilton Garcia <wilton.oliveira@mobly.com.br>, <wiltonog@gmail.com>
+     **/
+    public function getCreditCard()
+    {
+        return new CreditCard();    
+    }
+
+
+    /**
+     * Return a TransactionServiceImpl object
+     *
+     * @return BCash\ServiceImpl\TransactionServiceImpl
+     * @author Wilton Garcia <wilton.oliveira@mobly.com.br>, <wiltonog@gmail.com>
+     **/
+    public function getTransactionService()
+    {
+        return new TransactionServiceImpl();    
+    }
+
+    /**
+     * Search transaction by id
+     *
+     * @return stdClass
+     * @author Wilton Garcia <wilton.oliveira@mobly.com.br>, <wiltonog@gmail.com>
+     **/
+    public function searchTransaction($transactionId)
+    {
+        $consultation = new Consultation(); 
+        
+        $transaction = $consultation->searchByTransactionId($transactionId);
+
+        return $transaction->transacao;
+
+    }
+
+    /**
+     * Validate if is a CreditCard
+     *
+     * @return bool
+     * @author Wilton Garcia <wilton.oliveira@mobly.com.br>, <wiltonog@gmail.com>
+     **/
+    public function isCreditCardMethod($transactionRequest)
+    {
+        $creditCards = $this->getCreditCardMethods();
+        $paymentMethod = $transactionRequest->getPaymentMethod();
+
+        return in_array($paymentMethod->getCode(), $creditCards);         
+    }
+
+    /**
+     * Return a list of the methods
+     *
+     * @return array
+     * @author Wilton Garcia <wilton.oliveira@mobly.com.br>, <wiltonog@gmail.com>
+     **/
+    public function getCreditCardMethods()
+    {
+        return [
+            PaymentMethodEnum::VISA,
+            PaymentMethodEnum::MASTERCARD,
+            PaymentMethodEnum::AMERICAN_EXPRESS,
+            PaymentMethodEnum::AURA,
+            PaymentMethodEnum::DINERS,
+            PaymentMethodEnum::HIPERCARD,
+            PaymentMethodEnum::ELO,
+        ];
+    }
+
+}

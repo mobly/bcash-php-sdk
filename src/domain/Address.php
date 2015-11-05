@@ -1,6 +1,6 @@
 <?php
 
-require_once("domain/Model.php");
+namespace BCash\Domain;
 
 class Address extends Model {
 

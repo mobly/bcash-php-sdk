@@ -1,5 +1,7 @@
 <?php
 
+namespace BCash\Service;
+
 /**
  * Cliente para serviços de criação de transação.
  *

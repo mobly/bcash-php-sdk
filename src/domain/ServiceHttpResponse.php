@@ -1,5 +1,7 @@
 <?php
 
+namespace BCash\Domain;
+
 class ServiceHttpResponse {
 
 	private static $OK = 200;

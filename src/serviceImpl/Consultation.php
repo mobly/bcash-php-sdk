@@ -1,6 +1,6 @@
 <?php
 
-namespace BCash\ServiceImpl;
+namespace BCash\ServiceImpl;;
 
 use BCash\Config\Config;
 use BCash\Domain\TransactionRequest;
@@ -9,31 +9,30 @@ use BCash\Exception\ServiceHttpException;
 use BCash\Service\TransactionService;
 
 /**
- * Implementacao de @{TransactionService}.
+ * Cliente para consulta de transações.
  *
  */
-class TransactionServiceImpl extends BaseService{
+class Consultation extends BaseService
+{
 
-	public function __construct() {
-		
-		parent::__construct();
-	}
-	
-	public function __destruct() {
-		
-		parent::__destruct();
-	}
-
-	public function createTransaction(TransactionRequest $transactionRequest) {
-		
+	/**
+	 * Busca os dados da transação pelo id da transação no Bcash.
+	 *
+	 * @param id_transacao
+	 *           Id da transação no Bcash a ser consultada.
+	 * @return Objeto que contém informações da busca
+	 */
+	public function searchByTransactionId($id_transacao)
+	{
         try{
 
             $config = Config::getInstance();
 
             $httpResponse = $this->getHttpHelper()->post(
-                $config->transactionHost, 
-                $transactionRequest, 
-                $this->getAuthenticationHelper()->generateAuthenticationOAuth()
+                $config->transactionSearchHost, 
+                array('id_transacao' =>  $id_transacao, "tipo_retorno" => 2), 
+                $this->getAuthenticationHelper()->generateAuthenticationBasic(),
+                false
             );
 
 			if(!$httpResponse->isResponseOK()){
@@ -52,6 +51,11 @@ class TransactionServiceImpl extends BaseService{
 			
 			throw new TransactionException("Falha HTTP ao criar transacao", $e);
 		}
+
+
+		//$request = $this->generateRequest("id_transacao", $id_transacao);
+		//$response = $this->send($request);
+
+		//return HttpHelper::fromJson($response->getContent());
 	}
 }
-?>

@@ -1,5 +1,13 @@
 <?php
 
+namespace BCash\ServiceImpl;
+
+use BCash\Config\Config;
+use BCash\Domain\ServiceHttpResponse;
+use BCash\Exception\ServiceHttpException;
+use BCash\Service\HttpService;
+
+
 class HttpServiceImpl implements HttpService {
 	
 	public function __construct() {
@@ -12,11 +20,23 @@ class HttpServiceImpl implements HttpService {
 		}
 	}
 
-	public function post($url, $params, $auth) {
+	public function post($url, $params, $auth, $isJson = true) {
 		
 		try {
-		
-			$data = array("data"=> json_encode($params->toArray()),"version"=>Config::version);
+            $config = Config::getInstance();
+
+            if (!is_array($params)) {
+                $params = $params->toArray();
+            }
+
+            if ($isJson) {
+                $data = array(
+                    "data"=> json_encode($params),
+                    "version"=>$config->version
+                );
+            } else {
+                $data = $params;
+            }
 			
 			$httpResponse = new ServiceHttpResponse();
 			ob_start();
@@ -27,7 +47,7 @@ class HttpServiceImpl implements HttpService {
 			curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, '0');
 			curl_setopt ($ch, CURLOPT_SSL_VERIFYPEER, '0');
 			curl_setopt($ch, CURLOPT_HTTPHEADER, $auth );
-			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, Config::timeout );
+			curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $config->timeout );
 			curl_exec($ch);
 			$httpResponse->setResponse(urldecode(ob_get_contents()));
 			$httpResponse->setCode(curl_getinfo($ch, CURLINFO_HTTP_CODE));

@@ -1,5 +1,7 @@
 <?php
 
+namespace BCash\Service;
+
 /**
  * Cliente para busca de contas
  *

@@ -1,4 +1,7 @@
 <?php
+
+namespace BCash\Domain;
+
 abstract class Model {
 
 	public function toArray() {

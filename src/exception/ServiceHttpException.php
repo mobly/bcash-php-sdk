@@ -1,5 +1,6 @@
 <?php 
 
+namespace BCash\Exception;  
 
 class ServiceHttpException extends Exception {
     

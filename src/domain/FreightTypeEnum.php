@@ -1,5 +1,7 @@
 <?php
 
+namespace BCash\Domain;
+
 class FreightTypeEnum {
 
 	const E_SEDEX = "E_SEDEX";

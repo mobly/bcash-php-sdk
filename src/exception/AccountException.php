@@ -1,6 +1,6 @@
 <?php 
 
-require_once("exception/BaseException.php");
+namespace BCash\Exception; 
 
 class AccountException extends BaseException {
 	

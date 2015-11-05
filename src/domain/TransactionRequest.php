@@ -1,11 +1,10 @@
 <?php
 
+namespace BCash\Domain; 
+
 /**
  * Objeto de requisição para serviços de transação.
  */
-
-require_once("domain/Model.php");
-
 class TransactionRequest extends Model {
 
 	protected $sellerMail;

@@ -1,6 +1,10 @@
 <?php
 
-require_once("serviceImpl/BaseService.php");
+namespace BCash\ServiceImpl;
+
+use BCash\Service\ExtendedWarrantyService;
+use BCash\Exception\ExtendedWarrantyException;
+use BCash\Exception\ServiceHttpException;
 
 /**
  * Implementacao de @{ExtendedWarrantyService}.

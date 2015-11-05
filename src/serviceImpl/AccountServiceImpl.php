@@ -1,12 +1,17 @@
 <?php
 
+namespace BCash\ServiceImpl;
+
+use BCash\Domain\SearchRequest;
+use BCash\Service\BaseService;
+use BCash\Service\AccountService;
+use BCash\Exception\AccountException;
+use BCash\Exception\ServiceHttpException;
+
 /**
  * Implementação da interface @{AccountService}
  *
  */
-
-require_once("serviceImpl/BaseService.php");
-
 class AccountServiceImpl extends BaseService implements AccountService {
 	
 	public function __construct() {

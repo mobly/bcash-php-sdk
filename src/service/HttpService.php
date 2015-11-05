@@ -1,5 +1,6 @@
 <?php
 
+namespace BCash\Service;
 
 interface HttpService{
 

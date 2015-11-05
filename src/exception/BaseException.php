@@ -1,5 +1,8 @@
 <?php
-class BaseException extends Exception {
+
+namespace BCash\Exception;  
+
+class BaseException extends \Exception {
 
 	public function __construct($message, Exception $previous = null) {
 		

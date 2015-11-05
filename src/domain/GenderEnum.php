@@ -1,4 +1,7 @@
-<?php 
+<?php       
+
+namespace BCash\Domain;
+
 class GenderEnum{
 	
 	const MALE = "M";
