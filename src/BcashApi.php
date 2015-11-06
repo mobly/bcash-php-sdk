@@ -143,7 +143,7 @@ class BcashApi {
     }
 
     /**
-     * Return a list of the methods
+     * Return a list of the CreditCard methods
      *
      * @return array
      * @author Wilton Garcia <wilton.oliveira@mobly.com.br>, <wiltonog@gmail.com>
@@ -158,6 +158,23 @@ class BcashApi {
             PaymentMethodEnum::DINERS,
             PaymentMethodEnum::HIPERCARD,
             PaymentMethodEnum::ELO,
+        ];
+    }
+
+    /**
+     * Return a list of the TEF methods
+     *
+     * @return array
+     * @author Wilton Garcia <wilton.oliveira@mobly.com.br>, <wiltonog@gmail.com>
+     **/
+    public function getTransferMethods()
+    {
+        return [
+            PaymentMethodEnum::BB_ONLINE_TRANSFER,
+            PaymentMethodEnum::BRADESCO_ONLINE_TRANSFER,
+            PaymentMethodEnum::ITAU_ONLINE_TRANSFER,
+            PaymentMethodEnum::BANRISUL_ONLINE_TRANSFER,
+            PaymentMethodEnum::HSBC_ONLINE_TRANSFER,
         ];
     }
 
